@@ -10,6 +10,7 @@ import com.example.savetogpay.gpay.strategy.CardStrategy;
 import com.google.api.client.json.GenericJson;
 import com.google.gson.JsonObject;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -50,8 +51,28 @@ public abstract class AbstractCardStrategy implements CardStrategy {
         return cardDto;
     }
 
+    @Override
+    public List<GetCardDto> getAll(String classId) throws Exception {
+        return doGetAll(classId);
+    }
+
+    @Override
+    public GenericJson get(String objectId) throws Exception {
+        GenericJson getCallResponse = doGet(objectId);
+        return handleGetCallStatusCode(getCallResponse);
+    }
+
+    @Override
+    public GenericJson update(CardObjectAttributesDto cardObjectAttributes) throws Exception {
+        GenericJson updateCallResponse = doUpdate(cardObjectAttributes);
+        return handleUpdateCallStatusCode(updateCallResponse);
+    }
+
     abstract GenericJson doCreate(CardObjectAttributesDto cardObjectAttributes);
     abstract void addObjectToGooglePassJwt(Jwt googlePassJwt, JsonObject jwtPayload);
+    abstract List<GetCardDto> doGetAll(String classId) throws Exception;
+    abstract GenericJson doGet(String objectId);
+    abstract GenericJson doUpdate(CardObjectAttributesDto cardObjectAttributes);
 
     private GetCardDto handleInsertCallStatusCode(GenericJson insertCallResponse,
                                                   String objectId, String classId) throws Exception {
@@ -77,5 +98,25 @@ public abstract class AbstractCardStrategy implements CardStrategy {
                     "It does not match the target classId (%s). The saved object will not " +
                     "have the class properties you expect.", classIdOfObjectId, classId));
         }
+    }
+
+    private GenericJson handleGetCallStatusCode(GenericJson getCallResponse) throws Exception {
+        if (getCallResponse == null) {
+            throw new Exception("Objects get issue.");
+        }
+        if ((int)getCallResponse.get("code") == 200) {
+            return getCallResponse;
+        }
+        throw new Exception("Object get issue." + getCallResponse.toPrettyString());
+    }
+
+    private GenericJson handleUpdateCallStatusCode(GenericJson updateCallResponse) throws Exception {
+        if (updateCallResponse == null) {
+            throw new Exception("Objects update issue.");
+        }
+        if ((int)updateCallResponse.get("code") == 200) {
+            return updateCallResponse;
+        }
+        throw new Exception("Object update issue." + updateCallResponse.toPrettyString());
     }
 }

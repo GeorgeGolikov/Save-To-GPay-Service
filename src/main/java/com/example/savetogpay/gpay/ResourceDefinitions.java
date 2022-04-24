@@ -172,7 +172,8 @@ public class ResourceDefinitions {
      * @return LoyaltyObject payload - represents Loyalty object resource
      *
      *******************************/
-    public LoyaltyObject makeLoyaltyObjectResource(String classId, String objectId) {
+    public LoyaltyObject makeLoyaltyObjectResource(String classId, String objectId,
+                                                   CardObjectAttributesDto cardObjectAttributes) {
         // Define the resource representation of the Class
         // values should be from your DB/services; here we hardcode information
         // below defines an loyalty class. For more properties, check:
@@ -184,11 +185,17 @@ public class ResourceDefinitions {
         //// https://developers.google.com/pay/passes/support/libraries#libraries
         LoyaltyObject payload = new LoyaltyObject()
                 // required
-                .setId(objectId).setClassId(classId).setState("active")
+                .setId(objectId).setClassId(classId)
+                .setState(cardObjectAttributes.getState())
                 // optional properties
-                .setAccountId("12345678890").setAccountName("Jane Doe")
-                .setBarcode((new Barcode()).setType("qrCode").setValue("1234abc")
-                        .setAlternateText("optional alternate text"))
+                .setAccountId(cardObjectAttributes.getAccountId())
+                .setAccountName(cardObjectAttributes.getAccountName())
+                .setBarcode(
+                    new Barcode()
+                        .setType(cardObjectAttributes.getBarcodeType())
+                        .setValue(cardObjectAttributes.getBarcodeValue())
+                        .setAlternateText(cardObjectAttributes.getBarcodeAlternateText())
+                )
                 .setTextModulesData((new ArrayList<TextModuleData>() {
                     {
                         add((new TextModuleData()).setHeader("Jane\"s Baconrista Rewards")

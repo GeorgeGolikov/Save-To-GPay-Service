@@ -1118,6 +1118,72 @@ public class RestMethods {
         return response;
     }
 
+    public GenericJson getAllOfferObjects(String classId) {
+        GenericJson response = null;
+        GoogleCredential credentials = makeOauthCredential();
+        Config config = Config.getInstance();
+
+        // Use the Google Pay API for Passes Java client lib to insert an Offer object
+        //// check the devsite for newest client lib: https://developers.google.com/pay/passes/support/libraries#libraries
+        //// check reference API to see the underlying REST call:
+        //// https://developers.google.com/pay/passes/reference/v1/offerobject/insert
+        //// The methods to call these from client library are in Class com.google.api.services.walletobjects.Walletobjects
+        JsonFactory jsonFactory = new GsonFactory();
+        Walletobjects client = new Walletobjects.Builder(httpTransport, jsonFactory, credentials)
+                .setApplicationName(config.getApplicationName())
+                .build();
+
+        try {
+            var offerObjectsList = client.offerobject().list();
+            offerObjectsList.setClassId(classId);
+            response = offerObjectsList.execute();
+            response.put("code",200);
+            // System.out.println(response);
+        } catch (GoogleJsonResponseException gException)  {
+            System.out.println(">>>> [START] Google Server Error response:");
+            System.out.println(gException.getDetails());
+            System.out.println(">>>> [END] Google Server Error response\n");
+            response = gException.getDetails();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    public GenericJson getAllLoyaltyObjects(String classId) {
+        GenericJson response = null;
+        GoogleCredential credentials = makeOauthCredential();
+        Config config = Config.getInstance();
+
+        // Use the Google Pay API for Passes Java client lib to insert an Offer object
+        //// check the devsite for newest client lib: https://developers.google.com/pay/passes/support/libraries#libraries
+        //// check reference API to see the underlying REST call:
+        //// https://developers.google.com/pay/passes/reference/v1/offerobject/insert
+        //// The methods to call these from client library are in Class com.google.api.services.walletobjects.Walletobjects
+        JsonFactory jsonFactory = new GsonFactory();
+        Walletobjects client = new Walletobjects.Builder(httpTransport, jsonFactory, credentials)
+                .setApplicationName(config.getApplicationName())
+                .build();
+
+        try {
+            var loyaltyObjectsList = client.loyaltyobject().list();
+            loyaltyObjectsList.setClassId(classId);
+            response = loyaltyObjectsList.execute();
+            response.put("code",200);
+            // System.out.println(response);
+        } catch (GoogleJsonResponseException gException)  {
+            System.out.println(">>>> [START] Google Server Error response:");
+            System.out.println(gException.getDetails());
+            System.out.println(">>>> [END] Google Server Error response\n");
+            response = gException.getDetails();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
     public GenericJson updateOfferObject(String objectId, OfferObject offerObject){
         GenericJson response = null;
         GoogleCredential credentials = makeOauthCredential();
@@ -1135,6 +1201,37 @@ public class RestMethods {
 
         try {
             response = client.offerobject().patch(objectId, offerObject).execute();
+            response.put("code",200);
+            // System.out.println(response);
+        } catch (GoogleJsonResponseException gException)  {
+            System.out.println(">>>> [START] Google Server Error response:");
+            System.out.println(gException.getDetails());
+            System.out.println(">>>> [END] Google Server Error response\n");
+            response = gException.getDetails();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    public GenericJson updateLoyaltyObject(String objectId, LoyaltyObject loyaltyObject){
+        GenericJson response = null;
+        GoogleCredential credentials = makeOauthCredential();
+        Config config = Config.getInstance();
+
+        // Use the Google Pay API for Passes Java client lib to insert an Offer object
+        //// check the devsite for newest client lib: https://developers.google.com/pay/passes/support/libraries#libraries
+        //// check reference API to see the underlying REST call:
+        //// https://developers.google.com/pay/passes/reference/v1/offerobject/insert
+        //// The methods to call these from client library are in Class com.google.api.services.walletobjects.Walletobjects
+        JsonFactory jsonFactory = new GsonFactory();
+        Walletobjects client = new Walletobjects.Builder(httpTransport, jsonFactory, credentials)
+                .setApplicationName(config.getApplicationName())
+                .build();
+
+        try {
+            response = client.loyaltyobject().patch(objectId, loyaltyObject).execute();
             response.put("code",200);
             // System.out.println(response);
         } catch (GoogleJsonResponseException gException)  {

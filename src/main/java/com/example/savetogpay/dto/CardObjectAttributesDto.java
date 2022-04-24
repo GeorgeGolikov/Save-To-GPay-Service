@@ -15,6 +15,9 @@ public class CardObjectAttributesDto {
     private String barcodeValue;
     private String barcodeAlternateText;
 
+    private String accountId;
+    private String accountName;
+
     public String getName() {
         return name;
     }
@@ -77,5 +80,21 @@ public class CardObjectAttributesDto {
 
     public void setBarcodeAlternateText(String barcodeAlternateText) {
         this.barcodeAlternateText = barcodeAlternateText;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 }

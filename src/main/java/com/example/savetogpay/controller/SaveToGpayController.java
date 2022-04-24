@@ -3,6 +3,7 @@ package com.example.savetogpay.controller;
 import com.example.savetogpay.dto.*;
 import com.example.savetogpay.service.TemplateService;
 import com.example.savetogpay.service.CardService;
+import com.google.api.client.json.GenericJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,22 +72,32 @@ public class SaveToGpayController {
     }
 
     @GetMapping("/all-cards")
-    public ResponseEntity<?> getCards(@RequestParam String classId) {
-        // вернуть все карточки заданного класса
-        // возвращать список из objectId, classId и статус 200
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> getCards(@RequestParam CardObjectAttributesDto cardAttributesDto) {
+        try {
+            List<GetCardDto> getCardDtos = cardService.getCards(cardAttributesDto);
+            return ResponseEntity.ok(getCardDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(e.getMessage());
+        }
     }
 
     @GetMapping("/card")
-    public ResponseEntity<?> getCard(@RequestParam String objectId) {
-        // вернуть полный список полей конкретной карты
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> getCard(@RequestParam CardObjectAttributesDto cardAttributesDto) {
+        try {
+            GenericJson card = cardService.getCard(cardAttributesDto);
+            return ResponseEntity.ok(card);
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(e.getMessage());
+        }
     }
 
     @PatchMapping("/card")
     public ResponseEntity<?> updateCard(@RequestBody CardObjectAttributesDto cardAttributesDto) {
-        // обновить карточку
-        // вернуть objectId, classId и статус 200!
-        return ResponseEntity.ok().build();
+        try {
+            GenericJson card = cardService.updateCard(cardAttributesDto);
+            return ResponseEntity.ok(card);
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(e.getMessage());
+        }
     }
 }
