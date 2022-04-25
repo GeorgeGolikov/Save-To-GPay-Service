@@ -5,6 +5,7 @@ import com.example.savetogpay.service.TemplateService;
 import com.example.savetogpay.service.CardService;
 import com.google.api.client.json.GenericJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class SaveToGpayController {
     public ResponseEntity<?> createTemplate(@RequestBody CreateTemplateRequestDto requestDto) {
         try {
             String classId = templateService.createTemplate(requestDto.getApiKey(), requestDto.getCardClassAttributesDto());
-            return ResponseEntity.created(URI.create("/all-templates?apiKey=<your_api_key>")).body(classId);
+            return new ResponseEntity<>(classId, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.status(409).body(e.getMessage());
         }
@@ -61,18 +62,17 @@ public class SaveToGpayController {
     public ResponseEntity<?> createCard(@RequestBody CardObjectAttributesDto cardAttributesDto) {
         try {
             GetCardDto cardDto = cardService.createCard(cardAttributesDto);
-            return ResponseEntity.created(
-                URI.create(
-                    String.format("/card?objectId=%s", cardDto.getObjectId())
-                )
-            ).body(cardDto);
+            return new ResponseEntity<>(cardDto, HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.status(409).body(e.getMessage());
         }
     }
 
     @GetMapping("/all-cards")
-    public ResponseEntity<?> getCards(@RequestParam CardObjectAttributesDto cardAttributesDto) {
+    public ResponseEntity<?> getCards(@RequestParam String classId, @RequestParam String type) {
+        CardObjectAttributesDto cardAttributesDto = new CardObjectAttributesDto();
+        cardAttributesDto.setClassId(classId);
+        cardAttributesDto.setCardType(type);
         try {
             List<GetCardDto> getCardDtos = cardService.getCards(cardAttributesDto);
             return ResponseEntity.ok(getCardDtos);
@@ -82,7 +82,10 @@ public class SaveToGpayController {
     }
 
     @GetMapping("/card")
-    public ResponseEntity<?> getCard(@RequestParam CardObjectAttributesDto cardAttributesDto) {
+    public ResponseEntity<?> getCard(@RequestParam String objectId, @RequestParam String type) {
+        CardObjectAttributesDto cardAttributesDto = new CardObjectAttributesDto();
+        cardAttributesDto.setObjectId(objectId);
+        cardAttributesDto.setCardType(type);
         try {
             GenericJson card = cardService.getCard(cardAttributesDto);
             return ResponseEntity.ok(card);
