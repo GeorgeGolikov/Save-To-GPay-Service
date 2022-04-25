@@ -15,6 +15,8 @@ public class CardClassAttributesDto {
     private String reviewStatus;
     private String title;
     private String imageUri;
+    private String heroImageUri;
+    private String hexBackgroundColor;
 
     private String programName;
 
@@ -88,6 +90,22 @@ public class CardClassAttributesDto {
 
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public String getHeroImageUri() {
+        return heroImageUri;
+    }
+
+    public void setHeroImageUri(String heroImageUri) {
+        this.heroImageUri = heroImageUri;
+    }
+
+    public String getHexBackgroundColor() {
+        return hexBackgroundColor;
+    }
+
+    public void setHexBackgroundColor(String hexBackgroundColor) {
+        this.hexBackgroundColor = hexBackgroundColor;
     }
 
     public String getProgramName() {

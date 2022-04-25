@@ -55,7 +55,13 @@ public class ResourceDefinitions {
                     new Image().setSourceUri(
                             new ImageUri().setUri(cardClassAttributes.getImageUri())
                         )
-                );
+                )
+                .setHeroImage(
+                    new Image().setSourceUri(
+                        new ImageUri().setUri(cardClassAttributes.getHeroImageUri())
+                    )
+                )
+                .setHexBackgroundColor(cardClassAttributes.getHexBackgroundColor());
 
         return payload;
     }
@@ -128,6 +134,12 @@ public class ResourceDefinitions {
                 )
                 .setReviewStatus(cardClassAttributes.getReviewStatus())
                 // optional. Check design and reference api for more
+                .setHeroImage(
+                    new Image().setSourceUri(
+                        new ImageUri().setUri(cardClassAttributes.getHeroImageUri())
+                    )
+                )
+                .setHexBackgroundColor(cardClassAttributes.getHexBackgroundColor())
                 .setTextModulesData((new ArrayList<TextModuleData>() {
                     {
                         add((new TextModuleData()).setHeader("Rewards details").setBody(
