@@ -4,7 +4,7 @@ import com.example.savetogpay.dto.CardClassAttributesDto;
 import com.google.api.client.json.GenericJson;
 import com.google.api.services.walletobjects.model.OfferClass;
 
-public class OfferTemplateStrategy extends AbstractTemplateStrategy {
+class OfferTemplateStrategy extends AbstractTemplateStrategy {
     @Override
     public GenericJson doCreate(String classId, CardClassAttributesDto cardClassAttributes) {
         OfferClass classResourcePayload = resourceDefinitions.makeOfferClassResource(classId, cardClassAttributes);

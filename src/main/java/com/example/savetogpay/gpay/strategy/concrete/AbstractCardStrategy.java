@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class AbstractCardStrategy implements CardStrategy {
+abstract class AbstractCardStrategy implements CardStrategy {
     protected Config config = Config.getInstance();
     protected ResourceDefinitions resourceDefinitions = ResourceDefinitions.getInstance();
     protected RestMethods restMethods = RestMethods.getInstance();

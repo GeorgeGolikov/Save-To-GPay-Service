@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoyaltyCardStrategy extends AbstractCardStrategy{
+class LoyaltyCardStrategy extends AbstractCardStrategy{
     @Override
     GenericJson doCreate(CardObjectAttributesDto cardObjectAttributes) {
         LoyaltyObject objectResponse = resourceDefinitions.makeLoyaltyObjectResource(

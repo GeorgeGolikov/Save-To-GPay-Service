@@ -4,7 +4,7 @@ import com.example.savetogpay.dto.CardClassAttributesDto;
 import com.google.api.client.json.GenericJson;
 import com.google.api.services.walletobjects.model.LoyaltyClass;
 
-public class LoyaltyTemplateStrategy extends AbstractTemplateStrategy {
+class LoyaltyTemplateStrategy extends AbstractTemplateStrategy {
     @Override
     GenericJson doCreate(String classId, CardClassAttributesDto cardClassAttributes) {
         LoyaltyClass classResourcePayload = resourceDefinitions.makeLoyaltyClassResource(classId, cardClassAttributes);

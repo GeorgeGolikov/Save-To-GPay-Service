@@ -9,7 +9,7 @@ import com.google.api.client.json.GenericJson;
 
 import java.util.UUID;
 
-public abstract class AbstractTemplateStrategy implements TemplateStrategy {
+abstract class AbstractTemplateStrategy implements TemplateStrategy {
     protected Config config = Config.getInstance();
     protected ResourceDefinitions resourceDefinitions = ResourceDefinitions.getInstance();
     protected RestMethods restMethods = RestMethods.getInstance();
