@@ -4,7 +4,7 @@ import com.example.savetogpay.dto.CardClassAttributesDto;
 import com.example.savetogpay.dto.GetTemplateDto;
 import com.example.savetogpay.entity.TemplateEntity;
 import com.example.savetogpay.gpay.strategy.TemplateStrategy;
-import com.example.savetogpay.gpay.strategy.concrete.TemplateStrategyChooser;
+import com.example.savetogpay.gpay.strategy.strategychooser.TemplateStrategyChooser;
 import com.example.savetogpay.repository.TemplateDao;
 import com.example.savetogpay.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,8 @@ import java.util.List;
 
 @Service
 public class TemplateServiceImpl implements TemplateService {
-
     private TemplateDao templateDao;
-    private TemplateStrategy templateStrategy;
+    private final TemplateStrategyChooser strategyChooser = new TemplateStrategyChooser();
 
     TemplateServiceImpl() {
 
@@ -29,10 +28,8 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public String createTemplate(String apiKey, CardClassAttributesDto cardClassAttributes) throws Exception {
-        if (apiKey == null || apiKey.equals("")) {
-            throw new Exception("Api key not specified.");
-        }
-        templateStrategy = TemplateStrategyChooser.choose(cardClassAttributes.getCardType());
+        throwIfKeyNull(apiKey, "Api key");
+        TemplateStrategy templateStrategy = strategyChooser.choose(cardClassAttributes.getCardType());
         String classId = templateStrategy.create(cardClassAttributes);
         templateDao.save(new TemplateEntity(apiKey, classId, cardClassAttributes.getCardType(), cardClassAttributes.getName()));
         return classId;
@@ -48,10 +45,15 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public String updateTemplate(String classId, CardClassAttributesDto cardClassAttributes) throws Exception {
-        if (classId == null || classId.equals("")) {
-            throw new Exception("Class id not specified.");
-        }
-        templateStrategy = TemplateStrategyChooser.choose(cardClassAttributes.getCardType());
+        throwIfKeyNull(classId, "Class id");
+        TemplateStrategy templateStrategy = strategyChooser.choose(cardClassAttributes.getCardType());
         return templateStrategy.update(classId, cardClassAttributes);
+    }
+
+    private void throwIfKeyNull(String key, String idType) throws Exception {
+        if (key == null || key.isBlank()) {
+            String errorMessage = String.format("%s not specified.", idType);
+            throw new Exception(errorMessage);
+        }
     }
 }
