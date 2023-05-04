@@ -1,12 +1,14 @@
 package com.example.savetogpay.gpay.strategy.concrete;
 
 import com.example.savetogpay.dto.CardClassAttributesDto;
+import com.example.savetogpay.exception.TemplateOrCardException;
 import com.example.savetogpay.gpay.Config;
 import com.example.savetogpay.gpay.ResourceDefinitions;
 import com.example.savetogpay.gpay.RestMethods;
 import com.example.savetogpay.gpay.strategy.TemplateStrategy;
 import com.google.api.client.json.GenericJson;
 
+import java.io.IOException;
 import java.util.UUID;
 
 abstract class AbstractTemplateStrategy implements TemplateStrategy {
@@ -15,7 +17,7 @@ abstract class AbstractTemplateStrategy implements TemplateStrategy {
     protected RestMethods restMethods = RestMethods.getInstance();
 
     @Override
-    public String create(CardClassAttributesDto cardClassAttributes) throws Exception {
+    public String create(CardClassAttributesDto cardClassAttributes) {
         String classId = cardClassAttributes.getClassId();
         if (classId == null) {
             // your classUid should be a hash based off of pass metadata, for the demo we will use pass-type_class_uniqueid
@@ -36,23 +38,30 @@ abstract class AbstractTemplateStrategy implements TemplateStrategy {
     abstract GenericJson doCreate(String classId, CardClassAttributesDto cardClassAttributes);
 
     @Override
-    public String update(String classId, CardClassAttributesDto cardClassAttributes) throws Exception {
+    public String update(String classId, CardClassAttributesDto cardClassAttributes) {
         GenericJson classResponse = doUpdate(classId, cardClassAttributes);
         return handleInsertCallStatusCode(classResponse, classId);
     }
 
     abstract GenericJson doUpdate(String classId, CardClassAttributesDto cardClassAttributes);
 
-    private String handleInsertCallStatusCode(GenericJson insertCallResponse, String classId) throws Exception {
+    private String handleInsertCallStatusCode(GenericJson insertCallResponse, String classId) {
         if (insertCallResponse == null) {
-            throw new Exception("Class insert issue.");
+            throw new TemplateOrCardException("Class insert issue.");
         }
         if ((int)insertCallResponse.get("code") == 200) {
             return classId;
         }
         if ((int)insertCallResponse.get("code") == 409) {  // Id resource exists for this issuer account
-            throw new Exception(String.format("ClassId: (%s) already exists.", classId));
+            throw new TemplateOrCardException(String.format("ClassId: (%s) already exists.", classId));
         }
-        throw new Exception("Class insert issue." + insertCallResponse.toPrettyString());
+
+        String responseAsStr;
+        try {
+            responseAsStr = insertCallResponse.toPrettyString();
+        } catch (IOException e) {
+            throw new TemplateOrCardException("Class insert issue. Response cannot be stringified.");
+        }
+        throw new TemplateOrCardException("Class insert issue." + responseAsStr);
     }
 }

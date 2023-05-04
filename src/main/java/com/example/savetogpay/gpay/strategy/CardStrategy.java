@@ -7,8 +7,8 @@ import com.google.api.client.json.GenericJson;
 import java.util.List;
 
 public interface CardStrategy {
-    GetCardDto create(CardObjectAttributesDto cardObjectAttributes) throws Exception;
-    List<GetCardDto> getAll(String classId) throws Exception;
-    GenericJson get(String objectId) throws Exception;
-    GenericJson update(CardObjectAttributesDto cardObjectAttributes) throws Exception;
+    GetCardDto create(CardObjectAttributesDto cardObjectAttributes);
+    List<GetCardDto> getAll(String classId);
+    GenericJson get(String objectId);
+    GenericJson update(CardObjectAttributesDto cardObjectAttributes);
 }

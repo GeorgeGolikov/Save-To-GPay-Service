@@ -6,7 +6,7 @@ import com.example.savetogpay.dto.GetTemplateDto;
 import java.util.List;
 
 public interface TemplateService {
-    String createTemplate(String apiKey, CardClassAttributesDto cardClassAttributes) throws Exception;
+    String createTemplate(String apiKey, CardClassAttributesDto cardClassAttributes);
     List<GetTemplateDto> getTemplates(String apiKey);
-    String updateTemplate(String classId, CardClassAttributesDto cardClassAttributes) throws Exception;
+    String updateTemplate(String classId, CardClassAttributesDto cardClassAttributes);
 }

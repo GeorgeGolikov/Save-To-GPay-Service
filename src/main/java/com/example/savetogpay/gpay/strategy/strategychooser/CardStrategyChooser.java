@@ -1,5 +1,6 @@
 package com.example.savetogpay.gpay.strategy.strategychooser;
 
+import com.example.savetogpay.exception.TemplateOrCardException;
 import com.example.savetogpay.gpay.strategy.CardStrategy;
 
 public class CardStrategyChooser extends StrategyChooser {
@@ -7,11 +8,11 @@ public class CardStrategyChooser extends StrategyChooser {
         super("com.example.savetogpay.gpay.strategy.concrete.%sCardStrategy");
     }
 
-    public CardStrategy choose(String type) throws Exception {
+    public CardStrategy choose(String type) {
         try {
             return (CardStrategy) doChoose(type);
         } catch (Exception e) {
-            throw new Exception("Card type specified incorrectly.");
+            throw new TemplateOrCardException("Card type specified incorrectly.");
         }
     }
 }

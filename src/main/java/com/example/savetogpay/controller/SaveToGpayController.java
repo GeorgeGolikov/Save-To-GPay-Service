@@ -1,15 +1,14 @@
 package com.example.savetogpay.controller;
 
 import com.example.savetogpay.dto.*;
-import com.example.savetogpay.service.TemplateService;
 import com.example.savetogpay.service.CardService;
+import com.example.savetogpay.service.TemplateService;
 import com.google.api.client.json.GenericJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +27,7 @@ public class SaveToGpayController {
     }
 
     @PostMapping("/template")
-    public ResponseEntity<?> createTemplate(@RequestBody CreateTemplateRequestDto requestDto) {
+    public ResponseEntity<Object> createTemplate(@RequestBody CreateTemplateRequestDto requestDto) {
         try {
             String classId = templateService.createTemplate(requestDto.getApiKey(), requestDto.getCardClassAttributesDto());
             return new ResponseEntity<>(classId, HttpStatus.CREATED);
@@ -38,7 +37,7 @@ public class SaveToGpayController {
     }
 
     @GetMapping("/all-templates")
-    public ResponseEntity<?> getTemplates(@RequestParam String apiKey) {
+    public ResponseEntity<Object> getTemplates(@RequestParam String apiKey) {
         List<GetTemplateDto> templateDtos = templateService.getTemplates(apiKey);
         if (!templateDtos.isEmpty()) {
             return ResponseEntity.ok().body(templateDtos);
@@ -48,7 +47,7 @@ public class SaveToGpayController {
     }
 
     @PatchMapping("/template")
-    public ResponseEntity<?> updateTemplate(@RequestBody CreateTemplateRequestDto requestDto) {
+    public ResponseEntity<Object> updateTemplate(@RequestBody CreateTemplateRequestDto requestDto) {
         CardClassAttributesDto cardClassAttributes = requestDto.getCardClassAttributesDto();
         try {
             String classId = templateService.updateTemplate(cardClassAttributes.getClassId(), cardClassAttributes);
@@ -59,7 +58,7 @@ public class SaveToGpayController {
     }
 
     @PostMapping("/card")
-    public ResponseEntity<?> createCard(@RequestBody CardObjectAttributesDto cardAttributesDto) {
+    public ResponseEntity<Object> createCard(@RequestBody CardObjectAttributesDto cardAttributesDto) {
         try {
             GetCardDto cardDto = cardService.createCard(cardAttributesDto);
             return new ResponseEntity<>(cardDto, HttpStatus.CREATED);
@@ -69,7 +68,7 @@ public class SaveToGpayController {
     }
 
     @GetMapping("/all-cards")
-    public ResponseEntity<?> getCards(@RequestParam String classId, @RequestParam String type) {
+    public ResponseEntity<Object> getCards(@RequestParam String classId, @RequestParam String type) {
         CardObjectAttributesDto cardAttributesDto = new CardObjectAttributesDto();
         cardAttributesDto.setClassId(classId);
         cardAttributesDto.setCardType(type);
@@ -82,7 +81,7 @@ public class SaveToGpayController {
     }
 
     @GetMapping("/card")
-    public ResponseEntity<?> getCard(@RequestParam String objectId, @RequestParam String type) {
+    public ResponseEntity<Object> getCard(@RequestParam String objectId, @RequestParam String type) {
         CardObjectAttributesDto cardAttributesDto = new CardObjectAttributesDto();
         cardAttributesDto.setObjectId(objectId);
         cardAttributesDto.setCardType(type);
@@ -95,7 +94,7 @@ public class SaveToGpayController {
     }
 
     @PatchMapping("/card")
-    public ResponseEntity<?> updateCard(@RequestBody CardObjectAttributesDto cardAttributesDto) {
+    public ResponseEntity<Object> updateCard(@RequestBody CardObjectAttributesDto cardAttributesDto) {
         try {
             GenericJson card = cardService.updateCard(cardAttributesDto);
             return ResponseEntity.ok(card);
