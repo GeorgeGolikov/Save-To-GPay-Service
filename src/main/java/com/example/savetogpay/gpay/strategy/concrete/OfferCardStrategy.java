@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-class OfferCardStrategy extends AbstractCardStrategy {
+public class OfferCardStrategy extends AbstractCardStrategy {
     @Override
-    GenericJson doCreate(CardObjectAttributesDto cardObjectAttributes) {
+    public GenericJson doCreate(CardObjectAttributesDto cardObjectAttributes) {
         OfferObject objectResponse = resourceDefinitions.makeOfferObjectResource(
                 cardObjectAttributes.getClassId(),
                 cardObjectAttributes.getObjectId(),
@@ -29,7 +29,7 @@ class OfferCardStrategy extends AbstractCardStrategy {
     }
 
     @Override
-    List<GetCardDto> doGetAll(String classId) {
+    public List<GetCardDto> doGetAll(String classId) {
         GenericJson getCallResponse = restMethods.getAllOfferObjects(classId);
         return handleGetAllCallStatusCode(getCallResponse);
     }

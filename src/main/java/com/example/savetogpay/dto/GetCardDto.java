@@ -6,6 +6,8 @@ public class GetCardDto {
     private String objectId;
     private String link;
 
+    public GetCardDto() {}
+
     public GetCardDto(String classId, String objectId) {
         this.classId = classId;
         this.objectId = objectId;

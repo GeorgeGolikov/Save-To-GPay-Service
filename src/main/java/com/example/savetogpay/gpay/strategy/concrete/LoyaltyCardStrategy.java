@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-class LoyaltyCardStrategy extends AbstractCardStrategy{
+public class LoyaltyCardStrategy extends AbstractCardStrategy{
     @Override
-    GenericJson doCreate(CardObjectAttributesDto cardObjectAttributes) {
+    public GenericJson doCreate(CardObjectAttributesDto cardObjectAttributes) {
         LoyaltyObject objectResponse = resourceDefinitions.makeLoyaltyObjectResource(
                 cardObjectAttributes.getClassId(),
                 cardObjectAttributes.getObjectId(),
@@ -24,18 +24,18 @@ class LoyaltyCardStrategy extends AbstractCardStrategy{
     }
 
     @Override
-    void addObjectToGooglePassJwt(Jwt googlePassJwt, JsonObject jwtPayload) {
+    public void addObjectToGooglePassJwt(Jwt googlePassJwt, JsonObject jwtPayload) {
         googlePassJwt.addLoyaltyObject(jwtPayload);
     }
 
     @Override
-    List<GetCardDto> doGetAll(String classId) {
+    public List<GetCardDto> doGetAll(String classId) {
         GenericJson getCallResponse = restMethods.getAllLoyaltyObjects(classId);
         return handleGetAllCallStatusCode(getCallResponse);
     }
 
     @Override
-    GenericJson doGet(String objectId) {
+    public GenericJson doGet(String objectId) {
         return restMethods.getLoyaltyObject(objectId);
     }
 

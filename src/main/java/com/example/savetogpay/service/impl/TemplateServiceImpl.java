@@ -18,12 +18,12 @@ public class TemplateServiceImpl implements TemplateService {
     private TemplateDao templateDao;
     private final TemplateStrategyChooser strategyChooser = new TemplateStrategyChooser();
 
-    TemplateServiceImpl() {
+    public TemplateServiceImpl() {
 
     }
 
     @Autowired
-    TemplateServiceImpl(TemplateDao templateDao) {
+    public TemplateServiceImpl(TemplateDao templateDao) {
         this.templateDao = templateDao;
     }
 

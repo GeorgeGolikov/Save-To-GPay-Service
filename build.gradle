@@ -15,19 +15,20 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'junit:junit:4.13.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.postgresql:postgresql'
-    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 
-    compileOnly fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     // https://mvnrepository.com/artifact/org.json/json
-    compileOnly group: 'org.json', name: 'json', version: '20180813'
+    implementation group: 'org.json', name: 'json', version: '20180813'
     // https://mvnrepository.com/artifact/com.googlecode.jsontoken/jsontoken
-    compileOnly group: 'com.googlecode.jsontoken', name: 'jsontoken', version: '1.0'
+    implementation group: 'com.googlecode.jsontoken', name: 'jsontoken', version: '1.0'
     // https://mvnrepository.com/artifact/com.google.api-client/google-api-client-gson
-    compileOnly group: 'com.google.api-client', name: 'google-api-client-gson', version: '1.23.0'
+    implementation group: 'com.google.api-client', name: 'google-api-client-gson', version: '1.23.0'
     // https://mvnrepository.com/artifact/com.google.api-client/google-api-client
-    compileOnly group: 'com.google.api-client', name: 'google-api-client', version: '1.23.0'
+    implementation group: 'com.google.api-client', name: 'google-api-client', version: '1.23.0'
 }
 
 tasks.named('test') {
